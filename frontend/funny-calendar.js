@@ -1,126 +1,72 @@
-// DATA PREPARE
 
-// 1. get the data 
-
-
-
-function Month(name, id, nth, days){
-    this.name = name;
-    this.id = id;
-    this.nth = nth;
-    this.days = days;
+//object constructor
+function Country(name, short, population, flag, continent){
+    this.name = name,
+    this.short = short,
+    this.population = population,
+    this.flag = flag,
+    this.continent = continent
 }
 
-const months = [
-    new Month("January", "jan", 1, 31),
-    new Month("February", "feb", 2, 28),
-    new Month("March", "mar", 3, 31),
-    new Month("April", "apr", 4, 30),
-    new Month("May", "may", 5, 31),
-    new Month("June", "jun", 6, 30),
-    new Month("July", "jul", 7, 31),
-    new Month("August", "aug", 8, 31),
-    new Month("September", "sep", 9, 30),
-    new Month("October", "oct", 10, 31),
-    new Month("November", "nov", 11, 30),
-    new Month("December", "dec", 12, 31)
-];
-
-console.log(months);
-
-
-
-// 2. prepare data 
-        //business logic
-        //codewars ilyen jellegű feladatok
-
-
-// 3. components = HTML elements we would like to add to the document later
-
-const monthSection = (id, h1, days) => {        //paraméterek ---> function scope
+//components 
+const header = (logo) => {
     return `
-        <section id="${id}">
-            <h1>${h1}</h1>
-            <div class="days">${days}</div>
-        </section>
+    <header>
+        <a id="logo">${logo}</a>
+        <button></button>
+    </header>
     `;
 }
-
-
-const dayCard = (year, month, day) => {
-    return `
-    <div class="card">
-        <time>${year}</time>
-        <time>${month}</time>
-        <time>${day}</time>
-        <button class="card-btn">Get day name</button>
-    </div>
-    `
-}
-
-const dayCards = (month, callDayCard) => {
-    let toReturn = "";
-
-    for (let i = 1; i <= month.days; i++) {
-        toReturn += callDayCard(2022, month.nth, i)
-        
-    }
-
-    return toReturn
-}
-
-// console.log(dayCards(months[0], dayCard));
-
  
-
-
-
-
-// 4. render = add the components to the document
-
-
-
-
-const loadEvent = _ => {              // _ ---> nem használunk paramétert
-
-    let content = "";
-
-    for (const month of months) {
-        content += monthSection(month.id, month.name, dayCards(month, dayCard))
-    }
-
-    document.getElementById("root").insertAdjacentHTML("beforeend", content)
-
-    //click event vagy eventhandling
-/* 
-    function cardButtonClickEvent(event){
-        console.log(event.target.parentElement);
-        event.target.parentElement.classList.toggle("clicked")
-    }
-
-    const cardlist = document.querySelectorAll(".card")
+const countryCard = () => {
+    return `
+        <div id="card">
+            <h1>${Country.name}</h1>
+            <h2>${Country.short}</h2>
+            <p>${Country.population}</p>
+            <p>${Country.flag}</p>
+        </div>
+        `;
     
-    for (const card of cardlist) {
-        // console.log(card);
+        
+    
+// div cards idval
+}
 
-        card.querySelector("button").addEventListener("click", cardButtonClickEvent)
+
+const countryCards = (countryName, countryCard) => {
+    let toReturn = ""
+    for (let i = 0; i < .length; i++) {
+
     }
- */
+}
 
 
 
-    function clickEvent(event){
-        // console.log(event.target);
 
-        console.dir(this.target);
-        if (event.target.classList.contains("card-btn")) {
-            console.log("Hello click")
-            event.target.innerHTML = "This button was clicked"
-        }
-    }
+const loadEvent = async _ => {              // _ ---> nem használunk paramétert  //async = aszinkron művelet
+
+    //get data
+    const countryRes = await fetch("https://restcountries.com/v3.1/all");    //await ---> megvárjuk, míg betölt a fetch
+    const countryArr = await countryRes.json();  
+
+    //process data
+    let countries = countryArr.map(function (country) {
+        return new Country(country.name.common, country.cca3, country.population, country.flags.svg, country.continents[0]);
+    })
+
+    
+    console.log(countries);
+    
+    
+
+    // console.log(countries)
+
+    const rootElement = document.getElementById("root")
+    // rootElement.insertAdjacentHTML("beforeend", header("Countries")) 
+    rootElement.insertAdjacentHTML("beforeend", countryCard()) 
 
 
-    document.addEventListener("click", clickEvent)
 }
 
 window.addEventListener("load", loadEvent)  //callback függvény, nincs a végén (), argumentumként adjuk meg
