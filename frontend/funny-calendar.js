@@ -53,12 +53,13 @@ const dayCard = (year, month, day) => {
         <time>${year}</time>
         <time>${month}</time>
         <time>${day}</time>
+        <button class="card-btn">Get day name</button>
     </div>
     `
 }
 
 const dayCards = (month, callDayCard) => {
-    let toReturn = "0";
+    let toReturn = "";
 
     for (let i = 1; i <= month.days; i++) {
         toReturn += callDayCard(2022, month.nth, i)
@@ -68,11 +69,58 @@ const dayCards = (month, callDayCard) => {
     return toReturn
 }
 
-console.log(dayCards(months[0], dayCard));
+// console.log(dayCards(months[0], dayCard));
+
+ 
+
+
+
 
 // 4. render = add the components to the document
 
-const loadEvent = () => {
+
+
+
+const loadEvent = _ => {              // _ ---> nem használunk paramétert
+
+    let content = "";
+
+    for (const month of months) {
+        content += monthSection(month.id, month.name, dayCards(month, dayCard))
+    }
+
+    document.getElementById("root").insertAdjacentHTML("beforeend", content)
+
+    //click event vagy eventhandling
+/* 
+    function cardButtonClickEvent(event){
+        console.log(event.target.parentElement);
+        event.target.parentElement.classList.toggle("clicked")
+    }
+
+    const cardlist = document.querySelectorAll(".card")
+    
+    for (const card of cardlist) {
+        // console.log(card);
+
+        card.querySelector("button").addEventListener("click", cardButtonClickEvent)
+    }
+ */
+
+
+
+    function clickEvent(event){
+        // console.log(event.target);
+
+        console.dir(this.target);
+        if (event.target.classList.contains("card-btn")) {
+            console.log("Hello click")
+            event.target.innerHTML = "This button was clicked"
+        }
+    }
+
+
+    document.addEventListener("click", clickEvent)
 }
 
 window.addEventListener("load", loadEvent)  //callback függvény, nincs a végén (), argumentumként adjuk meg
