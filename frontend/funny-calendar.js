@@ -8,38 +8,53 @@ function Country(name, short, population, flag, continent){
     this.continent = continent
 }
 
+const menuButton = () => {
+    return `
+    <button id=menubtn>
+        <svg width="40px" heigth="40px">
+            <rect width="20px" height="2px" />
+            <rect width="20px" height="2px" />
+            <rect width="20px" height="2px" />
+        </svg> 
+        <span>Button</span> 
+    </button>
+    `  
+}
 //components 
-const header = (logo) => {
+const header = (logo, button) => {
     return `
     <header>
         <a id="logo">${logo}</a>
-        <button></button>
+        ${button()}
     </header>
     `;
 }
  
-const countryCard = () => {
+//countrycard
+const countryCard = (country) => {
     return `
-        <div id="card">
-            <h1>${Country.name}</h1>
-            <h2>${Country.short}</h2>
-            <p>${Country.population}</p>
-            <p>${Country.flag}</p>
-        </div>
-        `;
+    <div id="card">
+    <h1>${country.name}</h1>
+    <h2>${country.short}</h2>
+    <p>${country.population}</p>
+    <p>${country.continent}</p>
+    <img src="${country.flag}"></img>
+    </div>
+    `;
     
-        
     
-// div cards idval
+    
+    // div cards idval
 }
 
 
-const countryCards = (countryName, countryCard) => {
-    let toReturn = ""
-    for (let i = 0; i < .length; i++) {
-
-    }
+//countrycard
+const countryCards = (contentHTML) => {
+    return `
+    <section class="country-cards">${contentHTML}</section>
+    `
 }
+
 
 
 
@@ -63,9 +78,22 @@ const loadEvent = async _ => {              // _ ---> nem használunk paraméter
     // console.log(countries)
 
     const rootElement = document.getElementById("root")
-    // rootElement.insertAdjacentHTML("beforeend", header("Countries")) 
-    rootElement.insertAdjacentHTML("beforeend", countryCard()) 
+    rootElement.insertAdjacentHTML("beforeend", header("Countries", menuButton))
+    
 
+    //adding countryHTML 
+    let countryHTML = ""
+    countries.forEach(country => {
+        countryHTML += countryCard(country)
+    });
+    rootElement.insertAdjacentHTML("beforeend", countryCards(countryHTML)) 
+
+
+    const getMenuButton = document.getElementById("menubtn")
+    getMenuButton.addEventListener("click", (event) => {
+        event.target.classList.toggle("clicked")
+    }
+    )
 
 }
 
