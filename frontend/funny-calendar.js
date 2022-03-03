@@ -14,7 +14,7 @@ const formHTML = () => {
     `;
 };
 
-function loadEvent() {
+async function loadEvent () {
     console.log("load");
     const rootElement = document.getElementById("root")
 
@@ -54,6 +54,31 @@ function loadEvent() {
         console.log(e.target);
     })
     
+
+    //fetch API 
+    const nasaApiKey = "9ZvY9xKOw5h16yOBEm5JZcvaG6hvFqTOMkFBf3ru" 
+    const requestedDate = "2020-03-13"
+    const apod = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${nasaApiKey}&date=${requestedDate}`)
+
+
+    const apodJson = await apod.json()
+    // console.log(apodJson.explanation);
+
+    
+
+    //fetch más syntax-szel 
+    fetch(`https://api.nasa.gov/planetary/apod?api_key=${nasaApiKey}&date=${requestedDate}`).then(
+        function (apodResponse) {
+            // console.log(apodResponse);
+            apodResponse.json().then(
+                function (apodResponseJson){
+                console.log(apodResponseJson.explanation)
+                }
+            )
+        }
+    )
+
+
 
 }
 window.addEventListener("load", loadEvent);
